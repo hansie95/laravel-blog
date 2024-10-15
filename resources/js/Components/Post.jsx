@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import EditPostForm from "./EditPostForm";
 import CommentSection from "./CommentSection";
-import axios from "axios";
 import ErrorService from "./ErrorService";
+import axiosClient from "@/helpers/axiosClient";
 
 const Post = ({ post, setPosts }) => {
     const [isEditing, setIsEditing] = useState(false);
@@ -10,7 +10,7 @@ const Post = ({ post, setPosts }) => {
 
     const handleDelete = async () => {
         try {
-            await axios.delete(`http://localhost:8000/posts/${post.id}`);
+            await axiosClient.delete(`/posts/${post.id}`);
             setPosts((prevPosts) => prevPosts.filter((p) => p.id !== post.id));
         } catch (err) {
             setError("Error deleting post");

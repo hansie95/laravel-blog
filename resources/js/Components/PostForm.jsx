@@ -1,5 +1,5 @@
+import axiosClient from "@/helpers/axiosClient";
 import React, { useState } from "react";
-import axios from "axios";
 
 const PostForm = () => {
     const [title, setTitle] = useState("");
@@ -16,15 +16,15 @@ const PostForm = () => {
     const handleBlur = () => {
         setIsFocused(false);
     };
-    console.log(isFocused);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError("");
 
         try {
-            await axios.post(
-                "http://localhost:8000/posts",
+            await axiosClient.post(
+                `/posts`,
+
                 {
                     title,
                     content,

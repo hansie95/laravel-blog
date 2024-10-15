@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import Post from "./Post";
 import ErrorService from "./ErrorService";
+import axiosClient from "@/helpers/axiosClient";
 
 const PostList = () => {
     const [posts, setPosts] = useState([]);
@@ -11,7 +11,7 @@ const PostList = () => {
     useEffect(() => {
         const fetchPosts = async () => {
             try {
-                const response = await axios.get("http://localhost:8000/posts");
+                const response = await axiosClient.get(`/posts`);
                 setPosts(response.data);
             } catch (err) {
                 setError("Error fetching posts");

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import ErrorService from "./ErrorService";
+import axiosClient from "@/helpers/axiosClient";
 
 const CommentSection = ({ post, setPosts }) => {
     const [newComment, setNewComment] = useState("");
@@ -9,8 +10,8 @@ const CommentSection = ({ post, setPosts }) => {
     const handleAddComment = async () => {
         if (newComment.trim() === "") return;
         try {
-            const response = await axios.post(
-                `http://localhost:8000/posts/${post.id}/comments`,
+            const response = await axiosClient.post(
+                `/posts/${post.id}/comments`,
                 {
                     comment: newComment,
                 }
@@ -30,7 +31,7 @@ const CommentSection = ({ post, setPosts }) => {
 
     const handleDeleteComment = async (commentId) => {
         try {
-            await axios.delete(`http://localhost:8000/comments/${commentId}`);
+            await axiosClient.delete(`/comments/${commentId}`);
             setPosts((prevPosts) =>
                 prevPosts.map((p) =>
                     p.id === post.id

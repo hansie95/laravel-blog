@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import ErrorService from "./ErrorService";
+import axiosClient from "@/helpers/axiosClient";
 
 const EditPostForm = ({ post, setPosts, setIsEditing }) => {
     const [title, setTitle] = useState(post.title);
@@ -10,7 +11,7 @@ const EditPostForm = ({ post, setPosts, setIsEditing }) => {
     const handleSave = async () => {
         if (title.trim() === "" || content.trim() === "") return;
         try {
-            await axios.put(`http://localhost:8000/posts/${post.id}`, {
+            await axiosClient.put(`/posts/${post.id}`, {
                 title,
                 content,
             });
