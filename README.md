@@ -32,12 +32,6 @@ Create a `.env` file based on the `.env.example` file:
 cp .env.example .env
 ```
 
-Then generate the application key:
-
-```bash
-php artisan key:generate
-```
-
 ### 3. Install Dependencies
 
 Run the following command to install PHP and JavaScript dependencies:
@@ -45,6 +39,12 @@ Run the following command to install PHP and JavaScript dependencies:
 ```bash
 composer install
 npm install
+```
+
+Then generate the application key:
+
+```bash
+php artisan key:generate
 ```
 
 ### 4. Run Database Migrations
