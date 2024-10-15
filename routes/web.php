@@ -18,6 +18,10 @@ Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+Route::get('/post-create', function () {
+    return Inertia::render('PostCreate');
+})->middleware(['auth', 'verified'])->name('post-create');
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -25,5 +29,6 @@ Route::middleware('auth')->group(function () {
 });
 
 require base_path('routes/posts.php');
+require base_path('routes/comments.php');
 
 require __DIR__.'/auth.php';

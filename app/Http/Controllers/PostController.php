@@ -5,18 +5,14 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Post;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class PostController extends Controller
 {
     public function index()
     {
-        $posts = Post::all();
-        return view('posts.index', compact('posts'));
-    }
-
-    public function create()
-    {
-        return view('posts.create');
+        $posts = Post::with('comments')->get();
+        return response()->json($posts, 200);
     }
 
     public function store(Request $request)
@@ -26,38 +22,27 @@ class PostController extends Controller
             'content' => 'required|string',
         ]);
 
-        Post::create([
+        $post = Post::create([
             'user_id' => Auth::id(),
             'title' => $request->title,
             'content' => $request->content,
         ]);
 
-        return redirect('/posts');
+        return response()->json($post, 201);
     }
 
     public function show($id)
     {
         $post = Post::with('comments')->findOrFail($id);
-        return view('posts.show', compact('post'));
-    }
-
-    public function edit($id)
-    {
-        $post = Post::findOrFail($id);
-
-        if ($post->user_id !== Auth::id()) {
-            abort(403);
-        }
-
-        return view('posts.edit', compact('post'));
+        return response()->json($post, 200);
     }
 
     public function update(Request $request, $id)
     {
         $post = Post::findOrFail($id);
 
-        if ($post->user_id !== Auth::id()) {
-            abort(403);
+        if (Gate::denies('update-post', $post)) {
+            return response()->json(['message' => 'Forbidden'], 403);
         }
 
         $request->validate([
@@ -67,19 +52,20 @@ class PostController extends Controller
 
         $post->update($request->only(['title', 'content']));
 
-        return redirect('/posts/' . $id);
+        return response()->json($post, 200);
     }
 
     public function destroy($id)
     {
         $post = Post::findOrFail($id);
 
-        if ($post->user_id !== Auth::id()) {
-            abort(403);
+        if (Gate::denies('delete-post', $post)) {
+            return response()->json(['message' => 'Forbidden'], 403);
         }
 
         $post->delete();
 
-        return redirect('/posts');
+        return response()->json(['message' => 'Post deleted successfully'], 200);
     }
 }
+
