@@ -8,7 +8,7 @@ export default function ErrorService({ error, setErrorMessage }) {
     if (!error) return null;
 
     return (
-        <div className="relative p-4 bg-red-100 text-red-600 rounded">
+        <div className="relative p-2 my-3 bg-red-100 text-red-600 rounded">
             <p className="text-center">{error}</p>
             <button
                 onClick={handleClose}
